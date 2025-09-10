@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Starfield 0.1</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="transition.css">
+<script src="transition.js" defer></script>
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body, html {
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .reset {
+      background-color:#3b8d99;
+      border-radius: 10px;
+      cursor: pointer;
+      color: white;
+
+    }
+
+    canvas#starCanvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 2;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .content {
+      position: relative;
+      z-index: 1;
+      color: white;
+      text-align: center;
+      padding-top: 30vh;
+      font-family: sans-serif;
+    }
+  .weather {
+    background:#203a43;
+    border-radius: 25px;
+
+  }
+
+  .clock {
+    background:#203a43;
+    border-radius: 25px;
+
+  }
+
+  .esback {
+    background:#203a43;
+    border-radius: 25px;
+  }
+
+
+  
+    
+  </style>
+
+</head>
+
+<body>
+
+  <div class="page-transition active"></div>
+
+
+    <div class="split left">
+
+      <div>
+   <div class="esback"></div>
+      <script src="https://cdn.logwork.com/widget/text.js"> </script>
+      <a href="https://logwork.com/current-time-in-fairfield-united-states-pennsylvania" class="clock-widget-text" data-timezone="America/Los_Angeles" data-language="en" data-textcolor="#b2e7ff" data-background="#203a43" data-digitscolor="#2c5364">Fairfield, United States</a>
+      </div>
+
+
+      
+
+      <div>
+<a class="weatherwidget-io" href="https://forecast7.com/en/38d25n122d04/fairfield/?unit=us" data-label_1="FAIRFIELD" data-textcolor="#b2e7ff" >FAIRFIELD</a>
+      </div>
+
+
+  <script>
+  !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');
+  </script>
+
+<script>
+!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');
+</script>
+
+
+
+
+<canvas id="consoleCanvas" width="700" height="300"></canvas>
+
+<script>
+(() => {
+  const canvas = document.getElementById("consoleCanvas");
+  const ctx = canvas.getContext("2d");
+  ctx.font = "14px monospace";
+  ctx.fillStyle = "#b2e7ff";
+
+  const logs = [];
+  const maxLines = 17;
+
+  function drawLogs() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    logs.slice(-maxLines).forEach((line, i) => {
+      ctx.fillText(line, 5, 20 + i * 16);
+    });
+  }
+
+  function logToCanvas(level, args) {
+    const text = `[${level}] ` + args.map(a =>
+      (typeof a === "object" ? JSON.stringify(a) : a)
+    ).join(" ");
+    logs.push(text);
+    drawLogs();
+  }
+
+  // Keep original console
+  const origLog = console.log;
+  console.log = (...args) => {
+    origLog(...args);
+    logToCanvas("log", args);
+  };
+
+  const origError = console.error;
+  console.error = (...args) => {
+    origError(...args);
+    logToCanvas("error", args);
+  };
+
+  const origWarn = console.warn;
+  console.warn = (...args) => {
+    origWarn(...args);
+    logToCanvas("warn", args);
+  };
+
+  const origInfo = console.info;
+  console.info = (...args) => {
+    origInfo(...args);
+    logToCanvas("info", args);
+  };
+
+  console.warn("warn");
+  console.log("log");
+  console.error("error");
+  console.info("info");
+})();
+</script>
+    </div>
+
+<script>
+  console.log("clock loaded");
+  console.log("console loaded");
+  console.log("weather loaded");
+  console.log("rpi gpio found");
+  console
+</script>
+
+
+
+    <div class="split right">
+
+  <!-- Toolbar (App Buttons) -->
+<div id="toolbar">
+  <button onclick="openApp('clockApp')">Clock</button>
+  <button onclick="openApp('Music')">Music</button>
+  <button onclick="openApp('DinoGame')">Game :D</button>
+</div>
+
+<!-- App Containers -->
+<div id="apps">
+  <div id="clockApp" class="app active">
+
+  
+  </div>
+
+  <div id="Music" class="app">
+
+    <script src="https://cdn.commoninja.com/sdk/latest/commonninja.js" defer></script>
+    <div class="commonninja_component pid-b62191bc-6d91-4d23-a0db-3e99d83cb34b"></div>
+
+  </div>
+
+  <div id="DinoGame" class="app">
+
+    <iframe src="https://chromedino.com/" frameborder="0" scrolling="no" width="100%" height="100%" loading="lazy"></iframe>
+    <style type="text/css">iframe { position: absolute; width: 100%; height: 100%; z-index: 999; }</style> 
+
+  </div>
+</div>
+
+<style>
+  #toolbar {
+    display: flex;
+    gap: 10px;
+    margin: 15px;
+  }
+  #toolbar button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    background: #3a6ea5;
+    color: white;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  #toolbar button:hover {
+    background: #2e5380;
+  }
+
+  #apps {
+    margin: 20px;
+    padding: 15px;
+    border-radius: 10px;
+    background: rgba(0,0,0,0.2);
+  }
+  .app { display: none; }
+  .app.active { display: block; }
+
+</style>
+
+<script>
+  function openApp(appId) {
+    // Hide all apps
+    document.querySelectorAll('.app').forEach(app => {
+      app.classList.remove('active');
+    });
+    // Show the selected one
+    document.getElementById(appId).classList.add('active');
+  }
+
+</script>
+
+
+    <script>
+        console.info("html webapps loaded");
+    </script>
+    </div>
+
+
+<script>
+  function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+// Boot-style messages
+const messages = [
+  "Starting system logger",
+  "Loading kernel modules",
+  "Mounting /boot",
+  "Initializing network interface eth0",
+  "Checking disk partitions",
+  "Starting ssh daemon",
+  "Applying system locale",
+  "Loading USB drivers",
+  "Initializing Bluetooth adapter",
+  "Starting cron jobs",
+  "Activating swap",
+  "Setting hostname",
+  "Starting graphical target",
+  "Starting kernel...",
+  "Initializing cgroup subsys cpuset",
+  "Initializing cgroup subsys cpu",
+  "Initializing cgroup subsys cpuacct",
+  "Linux version 5.x.x-v7+",
+  "CPU: ARMv7 Processor [xxxx] revision x (ARMv7)",
+  "CPU frequency: 1200 MHz",
+  "Starting udev daemon...",
+  "Loading kernel modules...",
+  "usbcore: registered new interface driver usbfs",
+  "usbcore: registered new interface driver hub",
+  "usbcore: registered new device driver usb",
+  "EXT4-fs (mmcblk0p2): mounted filesystem with ordered data mode",
+  "VFS: Mounted root (ext4 filesystem) on device 179:2",
+  "Started system logging service",
+  "Started Network Manager",
+  "Starting OpenBSD Secure Shell server...",
+  "Started OpenBSD Secure Shell server",
+  "Starting Avahi mDNS/DNS-SD Stack...",
+  "Started Avahi mDNS/DNS-SD Stack",
+  "Starting dhcpcd on all interfaces...",
+  "eth0: link up, 100Mbps, full-duplex, auto-negotiation",
+  "wlan0: link up",
+  "Starting kernel version 5.15.32-v7+ with ARMv7 processor",
+  "Initializing cgroup subsys cpuset for resource control",
+  "Initializing cgroup subsys cpu and cpuacct for process accounting",
+  "Mounting /boot partition as vfat filesystem",
+  "Mounting root filesystem on /dev/mmcblk0p2",
+  "Loading kernel modules for USB, Ethernet, and GPIO support",
+  "Starting udev daemon for device management",
+  "Bringing up network interface eth0 with DHCP",
+  "Bringing up wireless interface wlan0 using wpa_supplicant",
+  "Starting OpenBSD Secure Shell server for remote connections",
+  "Starting cron daemon to schedule system tasks",
+  "Initializing system logger and journal services",
+  "Applying locale and timezone settings",
+  "Loading ALSA sound driver and initializing audio devices",
+  "Starting PulseAudio sound server",
+  "Starting Bluetooth service and scanning for adapters",
+  "Checking disk partitions and running filesystem consistency check",
+  "Activating swap space and tmpfs mounts",
+  "Starting firewall rules and network security policies",
+  "Initializing display manager and starting X server",
+  "Starting graphical interface and loading desktop environment",
+  "Starting Avahi mDNS/DNS-SD Stack for local network discovery",
+  "Starting system update services (apt, snapd, pacman)",
+  "Loading Docker and LXC container services",
+  "Checking hardware sensors and fan control daemon",
+  "Initializing backlight and display brightness controls",
+  "Starting network time synchronization with NTP servers",
+  "Verifying entropy pool and random number generator state",
+  "Starting light display manager...",
+  "Started GNOME Display Manager",
+  "Started graphical interface",
+  "Starting cron daemon...",
+  "Started cron daemon",
+  "Starting Bluetooth service...",
+  "Started Bluetooth service",
+  "Starting ALSA sound driver...",
+  "ALSA driver loaded",
+  "Starting firewall rules...",
+  "Firewall rules applied",
+  "Pi boot sequence completed"
+];
+
+async function bootLoader() {
+  const startTime = Date.now();
+  const maxDuration = 10000; // 5 seconds
+
+  while (Date.now() - startTime < maxDuration) {
+    // Pick a random message
+    const msg = messages[Math.floor(Math.random() * messages.length)];
+    
+    // Randomly decide if it succeeded or failed
+    const status = Math.random() > 0.1 ? "[  OK  ]" : "[FAILED]";
+    
+    // Timestamp like a real boot log
+    const timestamp = new Date().toISOString().split("T")[1].split("Z")[0];
+    
+    console.log(`${timestamp} ${status} ${msg} loaded`);
+    
+    // Random short delay to simulate boot speed
+    await sleep(Math.random() * 200 + 100); // 0.1–0.3s
+  }
+
+  console.log(new Date().toISOString().split("T")[1].split("Z")[0], "[  OK  ] System boot complete");
+}
+
+bootLoader();
+
+</script>
+
+
+
+    
+    <script>
+      const canvas = document.getElementById("starCanvas");
+      const ctx = canvas.getContext("2d");
+      let stars = [];
+  
+      function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      resizeCanvas();
+      window.addEventListener('resize', resizeCanvas);
+    
+      function createStar() {
+        return {
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          size: Math.random() * 2 + 0.5,
+          speedX: (Math.random() - 0.5) * 0.3,
+          speedY: (Math.random() - 0.5) * 0.3,
+          alpha: 0,
+          fadeIn: true
+          
+        };
+      }
+    
+      for (let i = 0; i < 120; i++) stars.push(createStar());
+    
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (let star of stars) {
+          ctx.beginPath();
+          ctx.fillStyle = `rgba(255, 255, 255, ${star.alpha})`;
+          ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+          ctx.fill();
+    
+          star.x += star.speedX;
+          star.y += star.speedY;
+    
+          if (star.fadeIn) {
+            star.alpha += 0.005;
+            if (star.alpha >= 0.8) star.fadeIn = false;
+          } else {
+            star.alpha -= 0.002;
+            if (star.alpha <= 0) {
+              Object.assign(star, createStar());
+            }
+          }
+    
+          if (star.x < 0 || star.x > canvas.width || star.y < 0 || star.y > canvas.height) {
+            Object.assign(star, createStar());
+          }
+        }
+    
+        requestAnimationFrame(animate);
+      }
+    
+      animate();
+
+      console.log("star canvas loaded");
+    </script>
+
+  </div>
+  </body>
+
